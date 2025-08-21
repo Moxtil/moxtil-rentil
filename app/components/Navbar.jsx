@@ -130,6 +130,14 @@ export default function Navbar() {
               />
             </div>
           )}
+          {!user && (
+            <Link
+              href="/sign-up"
+              className=" mx-2 px-5 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition border-2 border-transparent"
+            >
+              Sign Up
+            </Link>
+          )}
         </div>
       </div>
 
@@ -173,14 +181,8 @@ export default function Navbar() {
             {!user && (
               <div>
                 <Link
-                  href="/sign-up"
-                  className="inline-block mr-2 px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition border-2 border-transparent"
-                >
-                  Sign Up
-                </Link>
-                <Link
                   href="/sign-in"
-                  className="inline-block mx-2 px-5 py-2 bg-gray-700 hover:bg-gray-800 hover:border-white border-2 border-transparent text-white rounded-lg transition"
+                  className="inline-block px-5 py-2 bg-gray-700 hover:bg-gray-800 hover:border-white border-2 border-transparent text-white rounded-lg transition"
                 >
                   Login
                 </Link>

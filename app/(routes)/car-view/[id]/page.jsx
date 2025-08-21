@@ -21,7 +21,7 @@ export default function CarViewPage() {
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { rentReq, reqStatus, setReqStatus, fetchReqStatus, usersReqs } =
+  const { rentReq, reqStatus, setReqStatus, fetchReqStatus } =
     useContext(RentContext);
   const { id } = useParams();
 
@@ -101,20 +101,16 @@ export default function CarViewPage() {
       <Toaster position="top-center" reverseOrder={false} />
       <div className=" mx-auto bg-gray-800/80 rounded-2xl shadow-lg p-6 md:p-10 flex flex-col lg:flex-row gap-10">
         {/* Car Image */}
-        <div className="flex-1 relative">
+        <div className="flex-1 relative" data-aos="fade-right">
           <Image
             src={car.imageUrl}
             alt={car.title}
             width={600}
             height={400}
             className="rounded-xl object-cover w-full h-auto "
-            data-aos="fade-down"
           />
 
-          <div
-            className="absolute  -top-1 flex items-center justify-between right-0 left-0"
-            data-aos="fade-down"
-          >
+          <div className="absolute  -top-1 flex items-center justify-between right-0 left-0">
             {/* Favorite Button */}
             <p
               className={`${
@@ -128,27 +124,21 @@ export default function CarViewPage() {
         </div>
 
         {/* Car Details */}
-        <div className="flex-1 space-y-4">
-          <h1 className="text-3xl font-bold" data-aos="fade-down">
-            {car.title}
-          </h1>
+        <div className="flex-1 space-y-4" data-aos="fade-down">
+          <h1 className="text-3xl font-bold">{car.title}</h1>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-            <Detail label="Brand" value={car.brand} fade={"fade-right"} />
-            <Detail label="Year" value={car.model} fade={"fade-left"} />
-            <div
-              data-aos="fade-right"
-              className="bg-gray-700/50 rounded-lg p-3  flex-col shadow-inner flex items-start justify-between"
-            >
+            <Detail label="Brand" value={car.brand} />
+            <Detail label="Year" value={car.model} />
+            <div className="bg-gray-700/50 rounded-lg p-3  flex-col shadow-inner flex items-start justify-between">
               <span className="text-sm text-gray-400">Color </span>
               <div className={`${car.color} rounded-full w-5 h-5 `}></div>
             </div>
-            <Detail label="Status" value={car.status} fade={"fade-left"} />
+            <Detail label="Status" value={car.status} />
             <Detail
               label="Price"
               value={`${car.price}`}
               icon={<FaDollarSign />}
-              fade={"fade-right"}
             />
             <Detail
               label="Posted"
@@ -158,7 +148,6 @@ export default function CarViewPage() {
                   : "Unknown"
               }
               icon={<FaClock />}
-              fade={"fade-left"}
             />
             {car.publisherEmail === user?.emailAddresses[0]?.emailAddress && (
               <div className="w-full">
@@ -200,12 +189,14 @@ export default function CarViewPage() {
             {car.publisherEmail !== user?.emailAddresses[0].emailAddress &&
               car.availability === "Available" && (
                 <button
-                  disabled={reqStatus == "pending"}
+                  disabled={
+                    reqStatus === "pending" ||
+                    reqStatus === "Approved" ||
+                    reqStatus === "Rejected"
+                  }
                   onClick={async () => {
                     if (!user) {
                       router.push("/sign-up");
-                    } else if (reqStatus == "pending") {
-                      toast.error("Request Already Submitted!");
                     } else {
                       const result = await Swal.fire({
                         title: "Sure?",
@@ -224,13 +215,17 @@ export default function CarViewPage() {
                   }}
                   className={`text-[13px] py-2.5 px-4 bg-blue-500  text-white font-semibold rounded-md transition flex items-center gap-1 justify-center ${
                     reqStatus == "pending"
-                      ? "opacity-60 cursor-not-allowed"
+                      ? "opacity-70 cursor-not-allowed"
+                      : reqStatus === "Approved"
+                      ? "opacity-70 cursor-not-allowed bg-green-700/90"
+                      : reqStatus === "Rejected"
+                      ? "opacity-70 cursor-not-allowed bg-red-700/90"
                       : "hover:bg-blue-700 cursor-pointer"
                   }`}
                 >
                   <MdOutlineAdminPanelSettings size={20} />
                   {reqStatus === "pending"
-                    ? "Request Sent (pending)"
+                    ? "Request Sent (Pending)"
                     : reqStatus === "Approved"
                     ? "Request Approved"
                     : reqStatus === "Rejected"
@@ -241,7 +236,7 @@ export default function CarViewPage() {
           </div>
 
           {/* Description */}
-          <div className="mt-6" data-aos="fade-up">
+          <div className="mt-6">
             <h2 className="text-xl font-semibold mb-2">Description</h2>
             <p className="text-gray-300 bg-gray-700/40 rounded-md p-4">
               {car.description}
@@ -266,11 +261,8 @@ export default function CarViewPage() {
   );
 }
 
-const Detail = ({ label, value, icon, fade }) => (
-  <div
-    className="bg-gray-700/50 rounded-lg p-3 flex flex-col shadow-inner"
-    data-aos={fade}
-  >
+const Detail = ({ label, value, icon }) => (
+  <div className="bg-gray-700/50 rounded-lg p-3 flex flex-col shadow-inner">
     <span className="text-sm text-gray-400">{label}</span>
     <span className="text-lg font-semibold flex items-center gap-2">
       {icon} {value}
