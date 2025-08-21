@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { db } from "../../firebase/config";
 import { collection, onSnapshot } from "firebase/firestore";
 import { motion } from "framer-motion";
@@ -14,7 +14,7 @@ import Carousel from "../../components/Carousel";
 import GallerySection from "../../components/GallerySection";
 import About from "../../components/About";
 import Testimonials from "../../components/Testimonials";
-
+import { SearchSync } from "../../context/SearchSync";
 export default function HomePage() {
   const [cars, setCars] = useState([]);
   const [search, setSearch] = useState("");
@@ -26,12 +26,6 @@ export default function HomePage() {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [models, setModels] = useState([]);
-  const searchParams = useSearchParams();
-  const searchingQuery = searchParams.get("search") || "";
-
-  useEffect(() => {
-    setSearch(searchingQuery);
-  }, [searchingQuery]);
 
   const normalize = (value) => value?.toString().trim().toLowerCase();
   const capitalizeWords = (value) =>
@@ -108,6 +102,9 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-6 text-white">
       <Toaster position="top-center" reverseOrder={false} />
+      <Suspense fallback={null}>
+        <SearchSync setSearch={setSearch} />
+      </Suspense>
       <div className="max-w-7xl mx-auto">
         <Carousel />
 
