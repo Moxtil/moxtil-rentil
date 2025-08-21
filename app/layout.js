@@ -22,7 +22,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${outfit.className} bg-gradient-to-br from-gray-900 via-gray-800 to-black bg-no-repeat bg-cover min-h-screen text-[#eee]`}
       >
-        <ClerkProvider>
+        <ClerkProvider
+          key={process.env.CLERK_SECRET_KEY}
+          publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+        >
           <ToggleFavContext>
             <RentReqProvider>
               <AuthProvider>
