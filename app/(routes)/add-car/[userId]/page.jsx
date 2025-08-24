@@ -59,10 +59,7 @@ export default function AddCarPage() {
       name: "Red",
       code: "bg-red-500",
     },
-    {
-      name: "Blue",
-      code: "bg-blue-500",
-    },
+
     {
       name: "Blue",
       code: "bg-blue-500",
@@ -113,7 +110,6 @@ export default function AddCarPage() {
         );
 
         const file = await res.json();
-        console.log("Cloudinary response:", file);
 
         if (!file.secure_url) throw new Error("Cloudinary upload failed");
 
@@ -211,7 +207,7 @@ export default function AddCarPage() {
 
           {/* Car Brand */}
           <div>
-            <label className="block mb-2 font-semibold flex items-center gap-2">
+            <label className=" mb-2 font-semibold flex items-center gap-2">
               <FaCar /> Car Brand
             </label>
             <select
@@ -259,7 +255,7 @@ export default function AddCarPage() {
 
           {/* Color */}
           <div>
-            <label className="block mb-2 font-semibold flex items-center gap-2">
+            <label className=" mb-2 font-semibold flex items-center gap-2">
               <FaPalette /> Color
             </label>
             <select

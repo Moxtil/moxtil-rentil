@@ -51,10 +51,7 @@ export default function CarViewPage() {
       name: "Red",
       code: "bg-red-500",
     },
-    {
-      name: "Blue",
-      code: "bg-blue-500",
-    },
+
     {
       name: "Blue",
       code: "bg-blue-500",
@@ -88,7 +85,6 @@ export default function CarViewPage() {
         if (carSnap.exists()) {
           setCar({ id: carSnap.id, ...carSnap.data() });
           setFormData(carSnap.data()); // fill edit form
-          console.log(carSnap.data());
         } else {
           console.error("Car not found!");
         }
@@ -231,7 +227,7 @@ export default function CarViewPage() {
 
           {/* Car Brand */}
           <div>
-            <label className="block mb-2 font-semibold flex items-center gap-2">
+            <label className=" mb-2 font-semibold flex items-center gap-2">
               <FaCar /> Car Brand
             </label>
             <select

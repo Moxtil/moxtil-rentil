@@ -15,7 +15,6 @@ import Swal from "sweetalert2";
 import AddToFavButton from "../../../components/AddToFavButton";
 import { RentContext } from "../../../context/RentReqContext";
 import { TbMoodSad } from "react-icons/tb";
-
 export default function CarViewPage() {
   const { user } = useUser();
   const [car, setCar] = useState(null);
@@ -33,7 +32,6 @@ export default function CarViewPage() {
           id
         );
         setReqStatus(status);
-        console.log("Loaded status:", status);
       }
     };
     loadStatus();

@@ -6,7 +6,6 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineCarCrash } from "react-icons/md";
 import { Toaster } from "react-hot-toast";
