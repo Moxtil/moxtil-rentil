@@ -30,7 +30,9 @@ export default function RootLayout({ children }) {
             <RentReqProvider>
               <AuthProvider>
                 <AosContext>
-                  <WelcomingAnimation>{children}</WelcomingAnimation>
+                  {/* <WelcomingAnimation> */}
+                  {children}
+                  {/* </WelcomingAnimation> */}
                 </AosContext>
               </AuthProvider>
             </RentReqProvider>

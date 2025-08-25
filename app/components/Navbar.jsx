@@ -24,7 +24,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 shadow-lg bg-gray-800">
+    <nav className="fixed top-0 left-0 w-full z-[2000] shadow-lg bg-gray-800">
       <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
         {/* Logo */}
         <Link
@@ -148,7 +148,7 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="lg:hidden bg-gray-800 px-6 py-4 flex flex-col gap-4 shadow-lg z-20 border-b-[3px] border-white"
+            className="lg:hidden bg-gray-800 px-6 py-4 flex flex-col gap-4 shadow-lg z-[2000] border-b-[3px] border-white"
           >
             <Link
               href="/browse"
