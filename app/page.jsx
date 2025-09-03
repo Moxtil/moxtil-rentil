@@ -2,7 +2,8 @@
 import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import { LoadingSkeleton } from "./components/LoadingSkeleton";
+import { LargeLoadingSkeleton } from "./components/LargeLoadingSkeleton";
 export default function Home() {
   const { user, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
@@ -12,11 +13,18 @@ export default function Home() {
   }, [user, isLoaded, isSignedIn]);
 
   return (
-    <div className="h-screen w-full flex items-center justify-center flex-col gap-10 my-10">
-      <div className="text-lg font-semibold text-white">
-        Redirecting user...
+    <div className="flex flex-col gap-8 mt-10 p-6">
+      <LargeLoadingSkeleton />
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+        <LoadingSkeleton />
+        <LoadingSkeleton />
+        <LoadingSkeleton />
+        <LoadingSkeleton />
+        <LoadingSkeleton />
+        <LoadingSkeleton />
+        <LoadingSkeleton />
+        <LoadingSkeleton />
       </div>
-      <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
     </div>
   );
 }

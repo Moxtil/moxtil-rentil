@@ -14,6 +14,7 @@ import car5 from "../../assets/5.jpg";
 import car6 from "../../assets/6.jpg";
 import car7 from "../../assets/7.jpg";
 import car8 from "../../assets/8.jpg";
+import { motion } from "framer-motion";
 export default function HomeCarousel() {
   const cars = [
     { src: car1, alt: "Mustang" },
@@ -27,7 +28,13 @@ export default function HomeCarousel() {
   ];
 
   return (
-    <div className="w-full h-[350px] relative">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="relative w-full h-[350px]"
+    >
+      {" "}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={0}
@@ -60,7 +67,6 @@ export default function HomeCarousel() {
           </SwiperSlide>
         ))}
       </Swiper>
-
       {/* Custom styles using normal css  */}
       <style jsx global>{`
         .swiper-button-next,
@@ -77,6 +83,6 @@ export default function HomeCarousel() {
           opacity: 1;
         }
       `}</style>
-    </div>
+    </motion.div>
   );
 }

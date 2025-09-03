@@ -43,6 +43,8 @@ import { IoCarSportOutline } from "react-icons/io5";
 import { GrStatusGood } from "react-icons/gr";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { FaCheck, FaX } from "react-icons/fa6";
+import { LargeLoadingSkeleton } from "../../components/LargeLoadingSkeleton";
+import { LoadingSkeleton } from "../../components/LoadingSkeleton";
 
 export default function DashboardPage() {
   const [cars, setCars] = useState([]);
@@ -240,9 +242,37 @@ export default function DashboardPage() {
       </section>
     );
   }
-  if (!isLoaded && user) return <div className="loader"></div>;
+  if (!isLoaded && user)
+    return (
+      <div className="flex flex-col gap-8 mt-10 p-6">
+        <LargeLoadingSkeleton />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+        </div>
+      </div>
+    );
   return (
-    <Suspense fallback={<div className="loader"></div>}>
+    <Suspense
+      fallback={
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10 p-4">
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+        </div>
+      }
+    >
       <div className="min-h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white p-6">
         {/* Header */}
         <Toaster position="top-center" reverseOrder={false} />
@@ -253,9 +283,16 @@ export default function DashboardPage() {
           transition={{ duration: 0.5 }}
           className="flex justify-between items-center mb-8"
         >
-          <h1 className="text-3xl font-bold" data-aos="fade-down">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold"
+          >
+            {" "}
             Dashboard
-          </h1>
+          </motion.h1>
         </motion.div>
 
         {/* Dashboard Content */}
@@ -265,8 +302,10 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
             <motion.div
               whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
               className="bg-gray-800 rounded-2xl p-6 shadow-lg"
-              data-aos="fade-right"
             >
               <FaCar className="text-blue-400 text-3xl mb-2" />
               <h4 className="text-lg font-bold">Your Cars</h4>
@@ -274,8 +313,10 @@ export default function DashboardPage() {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               className="bg-gray-800 rounded-2xl p-6 shadow-lg"
-              data-aos="fade-down"
             >
               <FaChartLine className="text-green-400 text-3xl mb-2" />
               <h4 className="text-lg font-bold">
@@ -285,8 +326,10 @@ export default function DashboardPage() {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
               className="bg-gray-800 rounded-2xl p-6 shadow-lg"
-              data-aos="fade-left"
             >
               <FaHeart className="text-red-500 text-3xl mb-2" />
               <h4 className="text-lg font-bold">Wishlist Cars</h4>
@@ -296,16 +339,27 @@ export default function DashboardPage() {
 
           {/* My Wishlist */}
           <div className="my-8">
-            <h3 className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2"
+            >
+              {" "}
               <FaHeart className="text-red-500" /> Your Wishlist
-            </h3>
+            </motion.h2>
             {favCars.length === 0 ? (
               <p className="text-gray-400">No cars found.</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {favCars.map((car, i) => (
-                  <div
+                  <motion.div
                     key={i}
+                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
                     className="relative bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:scale-[1.02] transition-all"
                   >
                     <p
@@ -358,7 +412,7 @@ export default function DashboardPage() {
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             )}
@@ -367,9 +421,16 @@ export default function DashboardPage() {
           {/* My Cars Section */}
           <div>
             <div className="flex items-center justify-between gap-3">
-              <h3 className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2">
-                <FaCar className="text-blue-400" /> Your Cars
-              </h3>
+              <motion.h2
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2"
+              >
+                {" "}
+                <FaCar className="text-blue-400" /> Your Cars{" "}
+              </motion.h2>
               <Link
                 href={`/add-car/${user?.id}`}
                 className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-xl shadow-md transition"
@@ -380,9 +441,12 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cars.length > 0 ? (
                 cars.map((car) => (
-                  <div
-                    data-aos="fade-up"
+                  <motion.div
                     key={car.id}
+                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
                     className="relative bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-xl transition"
                   >
                     <div className="absolute right-0 left-0 flex items-center gap-2 justify-between  top-0 ">
@@ -456,7 +520,7 @@ export default function DashboardPage() {
                         <FaEye /> View
                       </Link>
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               ) : (
                 <p className="text-gray-400">
@@ -469,16 +533,27 @@ export default function DashboardPage() {
           {/* My Rent Requests */}
           <div>
             <div className="flex items-center justify-between gap-3 h-full">
-              <h3 className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2">
+              <motion.h2
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2"
+              >
+                {" "}
                 <MdOutlineCarRental className="text-green-500" /> Your Rent
                 Requests
-              </h3>
+              </motion.h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
               {usersReqs.length > 0 ? (
                 usersReqs.map((car) => (
-                  <div
+                  <motion.div
                     key={car.id}
+                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
                     className="relative bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-xl transition"
                   >
                     <div className="absolute right-0 left-0 flex items-center gap-2 justify-between  top-0 ">
@@ -554,7 +629,7 @@ export default function DashboardPage() {
                           : "Unknown"}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               ) : (
                 <p className="text-gray-400">
@@ -566,9 +641,16 @@ export default function DashboardPage() {
 
           {/* Rent Reqs On My Cars */}
           <div className="w-full my-10">
-            <h3 className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2"
+            >
+              {" "}
               <MdOutlineCarRental /> Rent Requests On Your Cars
-            </h3>
+            </motion.h2>
 
             {myCarsReqs.length === 0 ? (
               <p className="text-gray-400 text-left py-6">
@@ -577,8 +659,12 @@ export default function DashboardPage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {myCarsReqs.map((req) => (
-                  <div
+                  <motion.div
                     key={req.id}
+                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
                     className={` bg-gray-800 rounded-xl p-4 shadow transition-transform relative border-2 ${
                       req.status === "Approved"
                         ? "border-green-500"
@@ -698,7 +784,7 @@ export default function DashboardPage() {
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             )}

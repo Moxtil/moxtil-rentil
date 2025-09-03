@@ -37,9 +37,9 @@ export default function GallerySection() {
           {cars.map((car, i) => (
             <motion.div
               key={i}
+              transition={{ duration: 0.3 }}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
               whileHover={{ scale: 1.05, y: -5 }}
               className="bg-gray-800 rounded-2xl shadow-lg overflow-hidden"
             >
