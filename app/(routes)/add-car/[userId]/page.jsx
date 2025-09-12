@@ -34,47 +34,26 @@ export default function AddCarPage() {
     availability: "",
     image: null,
   });
+
   const [previewImage, setPreviewImage] = useState(null);
+  const [extraImages, setExtraImages] = useState([]);
+  const [previewExtraImages, setPreviewExtraImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const years = Array.from({ length: 30 }, (_, i) => 2025 - i);
   const colors = [
-    {
-      name: "Black",
-      code: "bg-[#222]",
-    },
-    {
-      name: "White",
-      code: "bg-[#fff]",
-    },
-    {
-      name: "Silver",
-      code: "bg-[#444]",
-    },
-    {
-      name: "Gray",
-      code: "bg-gray-700",
-    },
-    {
-      name: "Red",
-      code: "bg-red-500",
-    },
-
-    {
-      name: "Blue",
-      code: "bg-blue-500",
-    },
-    {
-      name: "Green",
-      code: "bg-green-500",
-    },
-    {
-      name: "Brown",
-      code: "bg-yellow-700",
-    },
+    { name: "Black", code: "bg-[#222]" },
+    { name: "White", code: "bg-[#fff]" },
+    { name: "Silver", code: "bg-[#444]" },
+    { name: "Gray", code: "bg-gray-700" },
+    { name: "Red", code: "bg-red-500" },
+    { name: "Blue", code: "bg-blue-500" },
+    { name: "Green", code: "bg-green-500" },
+    { name: "Brown", code: "bg-yellow-700" },
   ];
   const statuses = ["New", "Old", "Broken", "Well Used", "Tired"];
 
+  // handle single image change
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (files) {
@@ -85,14 +64,31 @@ export default function AddCarPage() {
     }
   };
 
+  // handle multiple extra images
+  const handleExtraImagesChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length + extraImages.length > 6) {
+      toast.error("You can upload a maximum of 6 images.");
+      return;
+    }
+
+    setExtraImages([...extraImages, ...files]);
+    setPreviewExtraImages([
+      ...previewExtraImages,
+      ...files.map((file) => URL.createObjectURL(file)),
+    ]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return;
     setLoading(true);
 
     let imageUrl = "";
+    let extraImageUrls = [];
 
     try {
+      // upload main image
       if (formData.image) {
         const data = new FormData();
         data.append("file", formData.image);
@@ -110,12 +106,37 @@ export default function AddCarPage() {
         );
 
         const file = await res.json();
-
         if (!file.secure_url) throw new Error("Cloudinary upload failed");
-
         imageUrl = file.secure_url;
       }
 
+      // upload extra images
+      if (extraImages.length > 0) {
+        const uploadPromises = extraImages.map(async (img) => {
+          const data = new FormData();
+          data.append("file", img);
+          data.append(
+            "upload_preset",
+            process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+          );
+
+          const res = await fetch(
+            `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+            {
+              method: "POST",
+              body: data,
+            }
+          );
+
+          const file = await res.json();
+          if (file.secure_url) return file.secure_url;
+          else throw new Error("Cloudinary upload failed");
+        });
+
+        extraImageUrls = await Promise.all(uploadPromises);
+      }
+
+      // save to firestore
       await addDoc(collection(db, "cars"), {
         title: formData.carTitle,
         brand: formData.carName,
@@ -125,6 +146,7 @@ export default function AddCarPage() {
         price: formData.price,
         description: formData.description,
         imageUrl: imageUrl,
+        extraImages: extraImageUrls,
         publisherId: user.id,
         publisherEmail: user.primaryEmailAddress?.emailAddress,
         publisherName: user.fullName,
@@ -132,6 +154,7 @@ export default function AddCarPage() {
         createdAt: serverTimestamp(),
       });
 
+      // reset form
       setFormData({
         carTitle: "",
         carName: "",
@@ -144,10 +167,13 @@ export default function AddCarPage() {
         image: null,
       });
       setPreviewImage(null);
+      setExtraImages([]);
+      setPreviewExtraImages([]);
+
       toast.success("Car Posted Successfully");
       router.push("/dashboard");
     } catch (error) {
-      toast.error("Error uploading car:", error.message);
+      toast.error("Error uploading car: " + error.message);
     }
 
     setLoading(false);
@@ -367,6 +393,34 @@ export default function AddCarPage() {
                 alt="Preview"
                 className="mt-2 w-40 h-40 object-cover rounded-lg border border-gray-300"
               />
+            )}
+          </div>
+
+          {/* Extra Images Upload */}
+          <div>
+            <label className=" mb-2 font-semibold flex items-center gap-2">
+              <MdOutlineAddPhotoAlternate /> More Car Images (Optional)
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleExtraImagesChange}
+              className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+            {previewExtraImages.length > 0 && (
+              <div className="mt-3 grid grid-cols-4 sm:grid-cols-6 gap-3">
+                {previewExtraImages.map((src, i) => (
+                  <Image
+                    key={i}
+                    src={src}
+                    width={120}
+                    height={120}
+                    alt={`Extra Preview ${i}`}
+                    className="w-28 h-28 object-cover rounded-lg border border-gray-300"
+                  />
+                ))}
+              </div>
             )}
           </div>
 

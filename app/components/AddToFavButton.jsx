@@ -41,7 +41,7 @@ export default function AddToFavButton({ item, size }) {
           loadFavorites(user);
         }
       }}
-      className="rounded-full  p-1.5"
+      className="rounded-full bg-white p-1.5"
     >
       {isFavorite && user ? (
         <button

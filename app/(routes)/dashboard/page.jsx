@@ -359,7 +359,6 @@ export default function DashboardPage() {
                     transition={{ duration: 0.3 }}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
                     className="relative bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:scale-[1.02] transition-all"
                   >
                     <p
@@ -446,7 +445,6 @@ export default function DashboardPage() {
                     transition={{ duration: 0.3 }}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
                     className="relative bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-xl transition"
                   >
                     <div className="absolute right-0 left-0 flex items-center gap-2 justify-between  top-0 ">
@@ -553,7 +551,6 @@ export default function DashboardPage() {
                     transition={{ duration: 0.3 }}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
                     className="relative bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-xl transition"
                   >
                     <div className="absolute right-0 left-0 flex items-center gap-2 justify-between  top-0 ">
@@ -664,7 +661,6 @@ export default function DashboardPage() {
                     transition={{ duration: 0.3 }}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
                     className={` bg-gray-800 rounded-xl p-4 shadow transition-transform relative border-2 ${
                       req.status === "Approved"
                         ? "border-green-500"
