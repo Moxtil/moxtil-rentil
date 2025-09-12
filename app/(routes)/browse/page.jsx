@@ -13,7 +13,15 @@ import Carousel from "../../components/Carousel";
 import GallerySection from "../../components/GallerySection";
 import About from "../../components/About";
 import Testimonials from "../../components/Testimonials";
+import { HowItWorks } from "../../components/HowItWorks";
 import { SearchSync } from "../../context/SearchSync";
+import { WhyChooseUs } from "../../components/WhyChooseUs";
+import { Partners } from "../../components/Partners";
+import { AppDownload } from "../../components/AppDownload";
+import { FAQSection } from "../../components/FAQ";
+import { FinalCTA } from "../../components/FinalCTA";
+import { Premium } from "../../components/Premium";
+
 export default function HomePage() {
   const [cars, setCars] = useState([]);
   const [search, setSearch] = useState("");
@@ -232,7 +240,7 @@ export default function HomePage() {
                 height={200}
                 src={car.imageUrl}
                 alt={car.title}
-                className="w-full h-48 md:object-cover sm:object-contain aspect-square"
+                className="w-full h-48 object-cover aspect-square"
               />
               <div className="p-4">
                 <h3 className="text-[16px] font-bold flex items-center justify-between gap-2">
@@ -270,7 +278,14 @@ export default function HomePage() {
         {/* Other Sections */}
         <GallerySection />
         <About />
+        <HowItWorks />
         <Testimonials />
+        <WhyChooseUs />
+        <Premium />
+        <Partners />
+        <AppDownload />
+        <FAQSection />
+        <FinalCTA />
       </div>
     </main>
   );
