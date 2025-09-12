@@ -20,10 +20,6 @@ export default function ContactPage() {
             <LoadingSkeleton />
             <LoadingSkeleton />
             <LoadingSkeleton />
-            <LoadingSkeleton />
-            <LoadingSkeleton />
-            <LoadingSkeleton />
-            <LoadingSkeleton />
           </div>
         </div>
       }

@@ -20,10 +20,6 @@ export default function Home() {
         <LoadingSkeleton />
         <LoadingSkeleton />
         <LoadingSkeleton />
-        <LoadingSkeleton />
-        <LoadingSkeleton />
-        <LoadingSkeleton />
-        <LoadingSkeleton />
       </div>
     </div>
   );

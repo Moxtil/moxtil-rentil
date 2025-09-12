@@ -251,10 +251,6 @@ export default function DashboardPage() {
           <LoadingSkeleton />
           <LoadingSkeleton />
           <LoadingSkeleton />
-          <LoadingSkeleton />
-          <LoadingSkeleton />
-          <LoadingSkeleton />
-          <LoadingSkeleton />
         </div>
       </div>
     );
@@ -262,10 +258,6 @@ export default function DashboardPage() {
     <Suspense
       fallback={
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10 p-4">
-          <LoadingSkeleton />
-          <LoadingSkeleton />
-          <LoadingSkeleton />
-          <LoadingSkeleton />
           <LoadingSkeleton />
           <LoadingSkeleton />
           <LoadingSkeleton />

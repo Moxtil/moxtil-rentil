@@ -108,7 +108,6 @@ export default function CarViewPage() {
           .filter((doc) => doc.id !== car.id)
           .map((doc) => ({ id: doc.id, ...doc.data() }));
 
-        console.log(similarCars);
         setSimilarCars(similarCars);
       } catch (error) {
         console.error("Error fetching similar cars:", error);
@@ -136,12 +135,12 @@ export default function CarViewPage() {
       <Toaster position="top-center" reverseOrder={false} />
       <div className="mx-auto bg-gray-800/80 rounded-2xl shadow-lg p-2 md:p-4 pt-6 flex flex-col lg:flex-row gap-5">
         {/* Car Image */}
-        <div className="flex flex-1 gap-2 items-start justify-start flex-col">
+        <div
+          data-aos="fade-down"
+          className="flex flex-1 gap-2 items-start justify-start flex-col"
+        >
           {" "}
-          <div
-            className="flex-1 flex flex-col items-start justify-center gap-2 relative md:w-full lg:w-[650px] h-[425px]"
-            data-aos="fade-right"
-          >
+          <div className="flex-1 flex flex-col items-start justify-center gap-2 relative md:w-full lg:w-[650px] h-[425px]">
             <Image
               src={mainImg}
               alt={car.title}
@@ -297,7 +296,7 @@ export default function CarViewPage() {
                       }
                     }
                   }}
-                  className={`text-[13px] py-2.5 px-4 bg-blue-500  text-white font-semibold rounded-md transition flex items-center gap-1 justify-center ${
+                  className={`col-span-2 text-[13px] py-2.5 px-4 bg-blue-500  text-white font-semibold rounded-md transition flex items-center gap-1 justify-center ${
                     reqStatus == "pending"
                       ? "opacity-70 cursor-not-allowed"
                       : reqStatus === "Approved"
