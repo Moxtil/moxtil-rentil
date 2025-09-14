@@ -21,6 +21,8 @@ import { AppDownload } from "../../components/AppDownload";
 import { FAQSection } from "../../components/FAQ";
 import { FinalCTA } from "../../components/FinalCTA";
 import { Premium } from "../../components/Premium";
+import { FaBolt, FaPalette, FaTag } from "react-icons/fa6";
+import { FaCalendarAlt } from "react-icons/fa";
 
 export default function HomePage() {
   const [cars, setCars] = useState([]);
@@ -107,7 +109,7 @@ export default function HomePage() {
   });
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-6 text-white">
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-2 text-white">
       <Toaster position="top-center" reverseOrder={false} />
       <Suspense fallback={null}>
         <SearchSync setSearch={setSearch} />
@@ -222,49 +224,60 @@ export default function HomePage() {
             <Link
               href={`/car-view/${car.id}`}
               key={car.id}
-              className="relative bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:scale-[1.02] duration-300 transition-all"
+              className="group bg-gray-900 rounded-2xl shadow-lg overflow-hidden border border-gray-700 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 flex flex-col"
             >
-              <div className="absolute right-0 left-0 flex items-center gap-2 justify-between top-0 hover:opacity-100 opacity-80 transition-all">
-                <p
-                  className={`${
+              {/* Car Image */}
+              <div className="relative w-full h-44 sm:h-52 overflow-hidden">
+                <Image
+                  width={500}
+                  height={300}
+                  src={car.imageUrl}
+                  alt={car.title}
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                />
+                {/* Availability Badge */}
+                <span
+                  className={`absolute top-3 left-3 text-xs sm:text-sm font-semibold px-3 py-1 rounded-full shadow-md ${
                     car.availability === "Available"
-                      ? "bg-green-500"
-                      : "bg-red-500"
-                  } text-white text-center font-medium rounded-md px-4 py-1.5 text-sx md:text-sm`}
+                      ? "bg-green-500 text-white"
+                      : "bg-red-500 text-white"
+                  }`}
                 >
                   {car.availability}
-                </p>
+                </span>
               </div>
-              <Image
-                width={300}
-                height={200}
-                src={car.imageUrl}
-                alt={car.title}
-                className="w-full h-48 object-cover aspect-square"
-              />
-              <div className="p-4">
-                <h3 className="text-[16px] font-bold flex items-center justify-between gap-2">
-                  <span>{car.title}</span>
+
+              {/* Car Info */}
+              <div className="p-4 flex flex-col justify-between flex-1">
+                <h3 className="text-lg font-bold text-white truncate mb-3">
+                  {car.title}
                 </h3>
-                <div className="flex flex-row justify-between items-center gap-2 mt-2">
+
+                {/* Specs */}
+                <div className="space-y-2 text-gray-300 text-sm">
                   <div className="flex items-center gap-2">
-                    <p className="text-xs md:text-sm text-gray-400 -mt-0.5">
-                      Color
-                    </p>
+                    <FaPalette className="text-indigo-400" />
+                    <span>Color:</span>
                     <div
-                      className={`${car.color} rounded-full border-2 border-white w-5 h-5`}
+                      className={`${car.color} rounded-full border w-4 h-4`}
                     ></div>
                   </div>
-                  <p className="text-xs md:text-sm text-gray-400">
-                    Year <span className="text-indigo-100">{car.model}</span>
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <FaCalendarAlt className="text-indigo-400" />
+                    <span>Year: {car.model}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FaBolt className="text-indigo-400" />
+                    <span>Status: {car.status}</span>
+                  </div>
                 </div>
-                <span className="text-gray-400 text-xs md:text-sm font-medium">
-                  Status <span className="text-indigo-100">{car.status}</span>
-                </span>
-                <p className="text-indigo-400 font-semibold mt-2">
-                  ${car.price}
-                </p>
+
+                {/* Price */}
+                <div className="flex items-center justify-between mt-4">
+                  <div className="flex items-center gap-2 text-indigo-400 font-semibold text-lg">
+                    <FaTag />${car.price}
+                  </div>
+                </div>
               </div>
             </Link>
           ))}

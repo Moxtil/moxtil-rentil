@@ -290,7 +290,6 @@ export default function DashboardPage() {
         {/* Dashboard Content */}
 
         <div className="space-y-8">
-          {/* Heading Icons , Cars length - Rent requests on my cars and Wishlist items */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -348,59 +347,72 @@ export default function DashboardPage() {
                 {favCars.map((car, i) => (
                   <motion.div
                     key={i}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.4 }}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    className="relative bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:scale-[1.02] transition-all"
+                    className="relative bg-gray-900 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 flex flex-col"
                   >
-                    <p
-                      className={`${
-                        car.availability === "Available"
-                          ? "bg-green-500"
-                          : "bg-red-500"
-                      } text-white text-center font-medium rounded-md px-4 py-1.5 text-sx md:text-sm opacity-80 absolute left-0 top-0`}
-                    >
-                      {car.availability}
-                    </p>
-                    {car.imageUrl && (
-                      <Image
-                        width={300}
-                        height={200}
-                        src={car?.imageUrl}
-                        alt={car.title || "Car"}
-                        className="w-full h-48 object-cover "
-                      />
-                    )}
-                    <div className="p-4">
-                      <h4 className="text-lg font-bold">
-                        {car?.brand} {car?.model}
+                    {/* Car Image */}
+                    <div className="relative w-full h-48 overflow-hidden">
+                      {car.imageUrl && (
+                        <Image
+                          width={400}
+                          height={250}
+                          src={car.imageUrl}
+                          alt={car.title || "Car"}
+                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                        />
+                      )}
+
+                      {/* Availability Badge */}
+                      <span
+                        className={`absolute top-3 left-3 px-3 py-1 text-xs md:text-sm font-semibold rounded-full shadow-md ${
+                          car.availability === "Available"
+                            ? "bg-green-500 text-white"
+                            : "bg-red-500 text-white"
+                        }`}
+                      >
+                        {car.availability}
+                      </span>
+
+                      {/* Icon Buttons */}
+                      <Link
+                        href={`/car-view/${car.id}`}
+                        className="absolute top-3 right-3 bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:bg-blue-600 transition"
+                      >
+                        <FaEye className="text-white text-lg" />
+                      </Link>
+
+                      <button
+                        onClick={async () => {
+                          await toggleFavorite(user, car);
+                          loadFavorites(user);
+                          toast.success("Car Removed Successfully!");
+                        }}
+                        className="cursor-pointer absolute top-14 right-3 bg-red-500 w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:bg-red-600 transition"
+                      >
+                        <FaHeart className="text-white text-lg" />
+                      </button>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="p-4 flex flex-col gap-3">
+                      {/* Title */}
+                      <h4 className="text-lg font-bold text-white truncate">
+                        {car.brand} {car.model}
                       </h4>
-                      <div className="flex items-center gap-2 mt-2">
-                        <p className="text-sm text-gray-400 -mt-0.5">Color :</p>
-                        <div
-                          className={`${car?.color} border-2 border-white rounded-full w-5 h-5 `}
-                        ></div>
-                      </div>{" "}
-                      <p className="text-blue-400 font-semibold">
-                        ${car?.price}
-                      </p>
-                      <div className="flex items-center gap-2 justify-between">
-                        <Link
-                          href={`/car-view/${car?.id}`}
-                          className="cursor-pointer mt-3 w-full bg-blue-400 hover:bg-blue-500 rounded-lg py-2 flex items-center justify-center gap-2"
-                        >
-                          <FaEye /> View
-                        </Link>
-                        <button
-                          onClick={async () => {
-                            await toggleFavorite(user, car);
-                            loadFavorites(user);
-                            toast.success("Car Removed Successfully!");
-                          }}
-                          className="cursor-pointer mt-3 w-full bg-red-500 hover:bg-red-600 rounded-lg py-2 flex items-center justify-center gap-2"
-                        >
-                          <FaHeart /> Remove
-                        </button>
+
+                      {/* Mini Details */}
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <div className="bg-gray-800/50 text-white px-3 py-1 rounded-full flex items-center gap-1 text-sm">
+                          <span>Color:</span>
+                          <div
+                            className={`${car.color?.toLowerCase()} w-4 h-4 rounded-full border border-white`}
+                          ></div>
+                        </div>
+                        <div className="bg-gray-800/50 text-white px-3 py-1 rounded-full flex items-center gap-1 text-sm">
+                          <span>Price:</span> ${car.price}
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -420,7 +432,7 @@ export default function DashboardPage() {
                 className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2"
               >
                 {" "}
-                <FaCar className="text-blue-400" /> Your Cars{" "}
+                <FaCar className="text-blue-400" /> Your Collection{" "}
               </motion.h2>
               <Link
                 href={`/add-car/${user?.id}`}
@@ -429,86 +441,101 @@ export default function DashboardPage() {
                 <FaPlus /> Add Car
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {cars.length > 0 ? (
                 cars.map((car) => (
                   <motion.div
                     key={car.id}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.4 }}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    className="relative bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-xl transition"
+                    className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col"
                   >
-                    <div className="absolute right-0 left-0 flex items-center gap-2 justify-between  top-0 ">
-                      <p
-                        className={`${
+                    <button
+                      onClick={() => {
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "This action cannot be undone!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "red",
+                          cancelButtonColor: "oklch(79.2% 0.209 151.711)",
+                          confirmButtonText: "Yes, delete it!",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            deleteCar(car.id);
+                            toast.success("Request Deleted Successfully!");
+                          }
+                        });
+                      }}
+                      className="cursor-pointer z-[50] absolute top-3 right-3 bg-white text-red-500 p-2 rounded-full shadow-md hover:bg-gray-200 transition"
+                    >
+                      <FaTrash />
+                    </button>
+
+                    {/* Car Image */}
+                    <div className="relative w-full h-48 overflow-hidden">
+                      {car.imageUrl && (
+                        <Image
+                          width={400}
+                          height={250}
+                          src={car.imageUrl}
+                          alt={car.title || "Car"}
+                          className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+                        />
+                      )}
+                      {/* Availability Badge */}
+                      <span
+                        className={`absolute top-3 left-3 text-xs md:text-sm font-semibold px-3 py-1 rounded-full shadow-md ${
                           car.availability === "Available"
-                            ? "bg-green-500"
-                            : "bg-red-500"
-                        } text-white text-center font-medium rounded-md px-4 py-1.5 text-sx md:text-sm opacity-80`}
+                            ? "bg-green-500 text-white"
+                            : "bg-red-500 text-white"
+                        }`}
                       >
                         {car.availability}
+                      </span>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="p-4 flex flex-col flex-1 justify-between">
+                      {/* Title & Price */}
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-lg font-bold text-white truncate">
+                          {car.brand} {car.model}
+                        </h4>
+                        <p className="text-indigo-400 font-semibold text-lg">
+                          ${car.price}
+                        </p>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-sm text-gray-400 my-2 line-clamp-2">
+                        {car.title}
                       </p>
-                      <button
-                        onClick={() => {
-                          Swal.fire({
-                            title: "Are you sure?",
-                            text: "You won't be able to revert this!",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "red",
-                            cancelButtonColor: "oklch(79.2% 0.209 151.711)",
-                            confirmButtonText: "Yes, delete it!",
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              deleteCar(car.id);
-                              toast.success("Request Deleted Successfully!");
-                            }
-                          });
-                        }}
-                        className="bg-white text-red-500 w-fit p-2 rounded-full shadow-lg text-center cursor-pointer"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                    {car.imageUrl && (
-                      <Image
-                        width={300}
-                        height={200}
-                        src={car.imageUrl}
-                        alt={car.title || "Car"}
-                        className="w-full h-48 object-cover "
-                      />
-                    )}
-                    <div className="flex items-center justify-between gap-2">
-                      <h4 className="text-lg font-bold">
-                        {car.brand} {car.model}
-                      </h4>
-                      <p className="text-blue-400 font-semibold">
-                        ${car.price}
-                      </p>
-                    </div>
-                    <p className="text-sm text-gray-400 my-1">{car.title}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <p className="text-sm text-gray-400 -mt-0.5">Color :</p>
-                      <div
-                        className={`${car.color.toLowerCase()} border-2 border-white rounded-full w-5 h-5 `}
-                      ></div>
-                    </div>
-                    <div className="flex items-center gap-2 justify-between">
-                      <Link
-                        href={`/car-manage/${car.id}`}
-                        className="mt-3 w-full bg-green-500 hover:bg-green-600 rounded-lg py-2 flex items-center justify-center gap-2"
-                      >
-                        <FaPen />
-                        Manage
-                      </Link>
-                      <Link
-                        href={`/car-view/${car.id}`}
-                        className="cursor-pointer mt-3 w-full bg-blue-400 hover:bg-blue-500 rounded-lg py-2 flex items-center justify-center gap-2"
-                      >
-                        <FaEye /> View
-                      </Link>
+
+                      {/* Specs */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <p className="text-sm text-gray-400">Color:</p>
+                        <div
+                          className={`${car.color.toLowerCase()} border-2 border-white rounded-full w-5 h-5`}
+                        ></div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex items-center justify-start w-full gap-3 mt-auto">
+                        <Link
+                          href={`/car-manage/${car.id}`}
+                          className="grow w-[150px] py-3 bg-green-500 hover:bg-green-600 rounded-lg flex items-center justify-center gap-2 text-white font-medium transition"
+                        >
+                          <FaPen />
+                        </Link>
+                        <Link
+                          href={`/car-view/${car.id}`}
+                          className="grow w-[150px] py-3 bg-blue-500 hover:bg-blue-600 rounded-lg flex items-center justify-center gap-2 text-white font-medium transition"
+                        >
+                          <FaEye />
+                        </Link>
+                      </div>
                     </div>
                   </motion.div>
                 ))
@@ -531,8 +558,8 @@ export default function DashboardPage() {
                 className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2"
               >
                 {" "}
-                <MdOutlineCarRental className="text-green-500" /> Your Rent
-                Requests
+                <MdOutlineCarRental className="text-green-500" /> Cars You
+                Requested
               </motion.h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
@@ -540,28 +567,44 @@ export default function DashboardPage() {
                 usersReqs.map((car) => (
                   <motion.div
                     key={car.id}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.4 }}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    className="relative bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-xl transition"
+                    className="relative bg-gray-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 flex flex-col"
                   >
-                    <div className="absolute right-0 left-0 flex items-center gap-2 justify-between  top-0 ">
-                      <p
-                        className={`${
+                    {/* Image Section */}
+                    <div className="relative w-full h-48 overflow-hidden">
+                      {car.imageUrl && (
+                        <Link href={`/car-view/${car.id}`}>
+                          <Image
+                            width={400}
+                            height={250}
+                            src={car.imageUrl}
+                            alt={car.title || "Car"}
+                            className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+                          />
+                        </Link>
+                      )}
+
+                      {/* Availability Badge */}
+                      <span
+                        className={`absolute top-3 left-3 px-3 py-1 text-xs md:text-sm font-semibold rounded-full shadow-md ${
                           car.availability === "Available"
-                            ? "bg-green-500"
-                            : "bg-red-500"
-                        } text-white text-center font-medium rounded-md px-4 py-1.5 text-sx md:text-sm opacity-80`}
+                            ? "bg-green-500 text-white"
+                            : "bg-red-500 text-white"
+                        }`}
                       >
                         {car.availability === "Available"
                           ? "Available"
                           : "Not Available"}
-                      </p>
+                      </span>
+
+                      {/* Delete Button */}
                       <button
                         onClick={() => {
                           Swal.fire({
                             title: "Are you sure?",
-                            text: "You won't be able to revert this!",
+                            text: "This request will be deleted permanently!",
                             icon: "warning",
                             showCancelButton: true,
                             confirmButtonColor: "red",
@@ -574,49 +617,46 @@ export default function DashboardPage() {
                             }
                           });
                         }}
-                        className="bg-white text-red-500 w-fit p-2 rounded-full shadow-lg text-center cursor-pointer"
+                        className="cursor-pointer absolute top-3 right-3 bg-white text-red-500 p-2 rounded-full shadow-md hover:bg-gray-200 transition"
                       >
                         <FaTrash />
                       </button>
                     </div>
-                    {car.imageUrl && (
-                      <Link href={`/car-view/${car.id}`} className="w-full">
-                        <Image
-                          width={300}
-                          height={200}
-                          src={car.imageUrl}
-                          alt={car.title || "Car"}
-                          className="w-full h-48 object-cover"
-                        />
-                      </Link>
-                    )}
-                    <h4 className="text-lg font-bold">
-                      {car.brand} {car.model}
-                    </h4>
 
-                    <p className="text-sm text-gray-400 -mt-0.5">
-                      Request Status:{" "}
-                      <span
-                        className={`${
-                          car.status === "Approved"
-                            ? "text-green-500"
-                            : car.status === "Rejected"
-                            ? "text-red-500"
-                            : "text-yellow-500"
-                        } font-semibold`}
-                      >
-                        {car.status}
-                      </span>
-                    </p>
-                    <div className="flex items-center gap-2 justify-between">
-                      <p className="text-blue-400 font-semibold">
-                        ${car.price}
+                    {/* Content Section */}
+                    <div className="p-4 flex flex-col flex-1 justify-between space-y-3">
+                      {/* Title */}
+                      <h4 className="text-lg font-bold text-white">
+                        {car.brand} {car.model}
+                      </h4>
+
+                      {/* Request Status */}
+                      <p className="text-sm">
+                        Request Status:{" "}
+                        <span
+                          className={`${
+                            car.status === "Approved"
+                              ? "text-green-400"
+                              : car.status === "Rejected"
+                              ? "text-red-400"
+                              : "text-yellow-400"
+                          } font-semibold`}
+                        >
+                          {car.status}
+                        </span>
                       </p>
-                      <p className="text-gray-400">
-                        {car.createdAt?.toDate
-                          ? moment(car.createdAt.toDate()).fromNow()
-                          : "Unknown"}
-                      </p>
+
+                      {/* Price & Time */}
+                      <div className="flex items-center justify-between border-t border-gray-700 pt-3">
+                        <p className="text-indigo-400 font-bold">
+                          ${car.price}
+                        </p>
+                        <p className="text-gray-400 text-sm">
+                          {car.createdAt?.toDate
+                            ? moment(car.createdAt.toDate()).fromNow()
+                            : "Unknown"}
+                        </p>
+                      </div>
                     </div>
                   </motion.div>
                 ))
@@ -638,7 +678,7 @@ export default function DashboardPage() {
               className="text-xl md:text-x2xl lg:text-3xl font-semibold mb-4 flex items-center gap-2"
             >
               {" "}
-              <MdOutlineCarRental /> Rent Requests On Your Cars
+              <MdOutlineCarRental /> Incoming Rent Requests
             </motion.h2>
 
             {myCarsReqs.length === 0 ? (
@@ -650,10 +690,10 @@ export default function DashboardPage() {
                 {myCarsReqs.map((req) => (
                   <motion.div
                     key={req.id}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.4 }}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    className={` bg-gray-800 rounded-xl p-4 shadow transition-transform relative border-2 ${
+                    className={`bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-2 flex flex-col ${
                       req.status === "Approved"
                         ? "border-green-500"
                         : req.status === "Rejected"
@@ -661,111 +701,119 @@ export default function DashboardPage() {
                         : "border-yellow-500"
                     }`}
                   >
-                    <button
-                      onClick={() => {
-                        Swal.fire({
-                          title: "Are you sure?",
-                          text: "You won't be able to revert this!",
-                          icon: "warning",
-                          showCancelButton: true,
-                          confirmButtonColor: "red",
-                          cancelButtonColor: "oklch(79.2% 0.209 151.711)",
-                          confirmButtonText: "Yes, delete it!",
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            deleteRequestsOnMyCars(req.id, req.email);
-                            toast.success("Request Deleted Successfully!");
-                          }
-                        });
-                      }}
-                      className="bg-white text-red-500 w-fit p-2 rounded-full shadow-lg text-center cursor-pointer absolute right-2 top-2"
-                    >
-                      <FaTrash />
-                    </button>
+                    {/* Image + Delete Button */}
+                    <div className="relative w-full h-48">
+                      <Link href={`/car-view/${req.id}`}>
+                        <Image
+                          src={req.imageUrl}
+                          alt={req.title}
+                          width={400}
+                          height={250}
+                          className="w-full h-full object-cover"
+                        />
+                      </Link>
 
-                    <Link
-                      href={`/car-view/${req.id}`}
-                      key={req.id}
-                      className="w-full"
-                    >
-                      <Image
-                        src={req.imageUrl}
-                        alt={req.title}
-                        width={300}
-                        height={200}
-                        className="w-full h-48 object-cover "
-                      />
-                    </Link>
-                    <p className="text-gray-300 flex items-center gap-1">
-                      <IoCarSportOutline />
-                      <span className="font-semibold">Car:</span>{" "}
-                      <span className="text-gray-400 text-sm">
-                        {" "}
-                        {req.title || "N/A"}
-                      </span>
-                    </p>
-                    <p className="text-gray-300 flex items-center flex-wrap gap-1">
-                      <FaRegUserCircle />
-                      <span className="font-semibold text-indigo-500">
-                        {req.email}
-                      </span>
-                      <span className="text-gray-400 text-sm">
-                        Wants to rent your car
-                      </span>
-                    </p>
-                    <p className="text-gray-300 flex items-center gap-1">
-                      <MdOutlineAccessTime />
-                      <span className="font-semibold">Request Sent :</span>{" "}
-                      <span className="text-gray-400 text-sm">
-                        {req.createdAt?.toDate
-                          ? moment(req.createdAt.toDate()).fromNow()
-                          : "Unknown"}
-                      </span>
-                    </p>
-                    <p className="text-gray-300 flex items-center gap-1">
-                      {req.status === "Approved" ? (
-                        <GrStatusGood color="oklch(79.2% 0.209 151.711)" />
-                      ) : req.status === "Rejected" ? (
-                        <MdOutlineCancel color="red" />
-                      ) : (
-                        <IoIosInformationCircleOutline color="yellow" />
-                      )}
-                      <span className="font-semibold">Status:</span>{" "}
-                      <span
-                        className={`${
-                          req.status === "Approved"
-                            ? "text-green-400"
-                            : req.status === "pending"
-                            ? "text-yellow-400"
-                            : "text-red-400"
-                        } font-semibold`}
+                      <button
+                        onClick={() => {
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "red",
+                            cancelButtonColor: "oklch(79.2% 0.209 151.711)",
+                            confirmButtonText: "Yes, delete it!",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              deleteRequestsOnMyCars(req.id, req.email);
+                              toast.success("Request Deleted Successfully!");
+                            }
+                          });
+                        }}
+                        className="cursor-pointer absolute top-3 right-3 bg-white text-red-500 p-2 rounded-full shadow hover:bg-gray-200 transition"
                       >
-                        {req.status || "pending"}
-                      </span>
-                    </p>
-                    <div className="text-gray-300">
-                      <div className="flex items-center gap-2 justify-between">
+                        <FaTrash />
+                      </button>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="p-4 flex flex-col space-y-3 flex-1">
+                      {/* Car Info */}
+                      <p className="text-gray-200 flex items-center gap-2">
+                        <IoCarSportOutline className="text-indigo-400" />
+                        <span className="font-semibold">Car:</span>
+                        <span className="text-gray-400 text-sm">
+                          {req.title || "N/A"}
+                        </span>
+                      </p>
+
+                      {/* Renter Info */}
+                      <p className="text-gray-200 flex items-center gap-2">
+                        <FaRegUserCircle className="text-indigo-400" />
+                        <span className="font-semibold text-indigo-500">
+                          {req.email}
+                        </span>
+                        <span className="text-gray-400 text-sm">
+                          wants to rent your car
+                        </span>
+                      </p>
+
+                      {/* Time */}
+                      <p className="text-gray-200 flex items-center gap-2">
+                        <MdOutlineAccessTime className="text-indigo-400" />
+                        <span className="font-semibold">Request Sent:</span>
+                        <span className="text-gray-400 text-sm">
+                          {req.createdAt?.toDate
+                            ? moment(req.createdAt.toDate()).fromNow()
+                            : "Unknown"}
+                        </span>
+                      </p>
+
+                      {/* Status Badge */}
+                      <div className="flex items-center gap-2">
+                        {req.status === "Approved" ? (
+                          <GrStatusGood className="text-green-400" />
+                        ) : req.status === "Rejected" ? (
+                          <MdOutlineCancel className="text-red-400" />
+                        ) : (
+                          <IoIosInformationCircleOutline className="text-yellow-400" />
+                        )}
+                        <span className="font-semibold">Status:</span>
+                        <span
+                          className={`${
+                            req.status === "Approved"
+                              ? "text-green-400"
+                              : req.status === "pending"
+                              ? "text-yellow-400"
+                              : "text-red-400"
+                          } font-semibold`}
+                        >
+                          {req.status || "Pending"}
+                        </span>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-3 mt-auto">
                         <button
                           onClick={() =>
                             changeRequestStatus(req.id, "Approved", req.email)
                           }
-                          className={`font-semibold  mt-3 w-full bg-green-500/90  rounded-lg py-2 flex items-center justify-center gap-2 ${
+                          className={`flex-1 font-semibold py-2 rounded-lg flex items-center justify-center gap-2 transition ${
                             req.status === "Approved"
-                              ? "cursor-not-allowed bg-green-800/90"
-                              : "cursor-pointer hover:bg-green-800/90"
+                              ? "cursor-not-allowed bg-green-800/80 text-gray-200"
+                              : "bg-green-500 hover:bg-green-600 text-white cursor-pointer"
                           }`}
                         >
-                          <FaCheck />
-                          Approve
+                          <FaCheck /> Approve
                         </button>
                         <button
                           onClick={() =>
-                            changeRequestStatus(req?.id, "Rejected", req?.email)
+                            changeRequestStatus(req.id, "Rejected", req.email)
                           }
-                          className={`font-semibold  mt-3 w-full bg-red-500/90  rounded-lg py-2 flex items-center justify-center gap-2 ${
+                          className={`flex-1 font-semibold py-2 rounded-lg flex items-center justify-center gap-2 transition ${
                             req.status === "Rejected"
-                              ? "cursor-not-allowed bg-red-800/90"
-                              : "cursor-pointer hover:bg-red-800/90"
+                              ? "cursor-not-allowed bg-red-800/80 text-gray-200"
+                              : "bg-red-500 hover:bg-red-600 text-white cursor-pointer"
                           }`}
                         >
                           <FaX /> Reject
