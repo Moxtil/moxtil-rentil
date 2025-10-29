@@ -43,8 +43,8 @@ import { IoCarSportOutline } from "react-icons/io5";
 import { GrStatusGood } from "react-icons/gr";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { FaCheck, FaX } from "react-icons/fa6";
-import { LargeLoadingSkeleton } from "../../components/LargeLoadingSkeleton";
 import { LoadingSkeleton } from "../../components/LoadingSkeleton";
+import { GPTLoaderSkeleton } from "@/app/components/GPTLoaderSkeleton";
 
 export default function DashboardPage() {
   const [cars, setCars] = useState([]);
@@ -242,18 +242,7 @@ export default function DashboardPage() {
       </section>
     );
   }
-  if (!isLoaded && user)
-    return (
-      <div className="flex flex-col gap-8 mt-10 p-6">
-        <LargeLoadingSkeleton />
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
-          <LoadingSkeleton />
-          <LoadingSkeleton />
-          <LoadingSkeleton />
-          <LoadingSkeleton />
-        </div>
-      </div>
-    );
+  if (!isLoaded && user) return <GPTLoaderSkeleton />;
   return (
     <Suspense
       fallback={

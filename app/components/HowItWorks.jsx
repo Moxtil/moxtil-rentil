@@ -1,24 +1,26 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaSearchLocation, FaCar, FaRoad } from "react-icons/fa";
+import { FaSearchLocation } from "react-icons/fa";
+import { IoCarSportSharp } from "react-icons/io5";
+import { GiSteeringWheel } from "react-icons/gi";
 
 export const HowItWorks = () => {
   const steps = [
     {
       title: "Search Cars",
       desc: "Enter your location and dates to find available cars instantly.",
-      icon: <FaSearchLocation className="text-5xl text-blue-500" />,
+      icon: <FaSearchLocation className="text-5xl text-indigo-500" />,
     },
     {
       title: "Choose & Book",
       desc: "Pick the perfect car for your trip and confirm your booking in seconds.",
-      icon: <FaCar className="text-5xl text-green-500" />,
+      icon: <IoCarSportSharp className="text-5xl text-indigo-500" />,
     },
     {
       title: "Drive & Enjoy",
       desc: "Pick up your car and hit the road — stress-free and reliable.",
-      icon: <FaRoad className="text-5xl text-purple-500" />,
+      icon: <GiSteeringWheel className="text-5xl text-indigo-500" />,
     },
   ];
 

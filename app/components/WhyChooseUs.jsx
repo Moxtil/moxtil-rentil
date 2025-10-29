@@ -8,22 +8,22 @@ export const WhyChooseUs = () => {
     {
       title: "Affordable Rates",
       desc: "Get the best daily rates with no hidden fees.",
-      icon: <FaDollarSign className="text-5xl text-green-400" />,
+      icon: <FaDollarSign className="text-5xl text-indigo-500" />,
     },
     {
       title: "24/7 Support",
       desc: "Our team is always ready to help you on the road.",
-      icon: <FaHeadset className="text-5xl text-blue-400" />,
+      icon: <FaHeadset className="text-5xl text-indigo-500" />,
     },
     {
       title: "Wide Vehicle Selection",
       desc: "From economy cars to luxury SUVs — we’ve got you covered.",
-      icon: <FaCarAlt className="text-5xl text-yellow-400" />,
+      icon: <FaCarAlt className="text-5xl text-indigo-500" />,
     },
     {
       title: "Quick & Easy Booking",
       desc: "Reserve your car in just a few clicks.",
-      icon: <FaClock className="text-5xl text-purple-400" />,
+      icon: <FaClock className="text-5xl text-indigo-500" />,
     },
   ];
 

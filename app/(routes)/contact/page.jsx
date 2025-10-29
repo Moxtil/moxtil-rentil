@@ -1,5 +1,4 @@
-import { LargeLoadingSkeleton } from "../../components/LargeLoadingSkeleton";
-import { LoadingSkeleton } from "../../components/LoadingSkeleton";
+import { GPTLoaderSkeleton } from "@/app/components/GPTLoaderSkeleton";
 import Link from "next/link";
 import { Suspense } from "react";
 import {
@@ -11,19 +10,7 @@ import {
 
 export default function ContactPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex flex-col gap-8 mt-10 p-6">
-          <LargeLoadingSkeleton />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
-            <LoadingSkeleton />
-            <LoadingSkeleton />
-            <LoadingSkeleton />
-            <LoadingSkeleton />
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={<GPTLoaderSkeleton />}>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex items-center justify-center p-6">
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Contact Info */}

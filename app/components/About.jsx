@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { FaUserTie, FaRocket, FaHandshake } from "react-icons/fa";
-import { FiStar } from "react-icons/fi";
+import { BsFillRocketTakeoffFill, BsStarFill } from "react-icons/bs";
 
 export default function AboutPage() {
   const aboutData = [
@@ -9,25 +9,27 @@ export default function AboutPage() {
       title: "Our Mission",
       description:
         "We aim to provide the best car rental experience with transparency and comfort for all our users.",
-      icon: <FaRocket className="text-4xl text-blue-400 mb-4" />,
+      icon: (
+        <BsFillRocketTakeoffFill className="text-4xl text-indigo-400 mb-4" />
+      ),
     },
     {
       title: "Our Values",
       description:
         "Trust, reliability, and customer satisfaction are at the core of everything we do.",
-      icon: <FaHandshake className="text-4xl text-green-400 mb-4" />,
+      icon: <FaHandshake className="text-4xl text-indigo-400 mb-4" />,
     },
     {
       title: "Our Team",
       description:
         "A passionate group of professionals dedicated to making your journey smoother and stress-free.",
-      icon: <FaUserTie className="text-4xl text-yellow-400 mb-4" />,
+      icon: <FaUserTie className="text-4xl text-indigo-400 mb-4" />,
     },
     {
       title: "Our Quality",
       description:
         "We constantly improve our services to ensure excellence and innovation in every ride.",
-      icon: <FiStar className="text-4xl text-purple-400 mb-4" />,
+      icon: <BsStarFill className="text-4xl text-indigo-400 mb-4" />,
     },
   ];
 
