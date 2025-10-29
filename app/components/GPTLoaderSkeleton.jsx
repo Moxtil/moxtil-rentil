@@ -1,6 +1,6 @@
 import React from "react";
 
-export const GPTLoaderSkeleton = () => {
+export default function GPTLoaderSkeleton() {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-gray-800 to-black bg-no-repeat bg-cover flex flex-col items-center justify-start text-gray-700">
       <header className="w-full max-w-7xl px-6 py-5 flex items-center justify-between">
@@ -80,4 +80,4 @@ export const GPTLoaderSkeleton = () => {
       </span>
     </div>
   );
-};
+}

@@ -44,7 +44,7 @@ import { GrStatusGood } from "react-icons/gr";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { FaCheck, FaX } from "react-icons/fa6";
 import { LoadingSkeleton } from "../../components/LoadingSkeleton";
-import { GPTLoaderSkeleton } from "@/app/components/GPTLoaderSkeleton";
+import GPTLoaderSkeleton from "@/app/components/GPTLoaderSkeleton";
 
 export default function DashboardPage() {
   const [cars, setCars] = useState([]);

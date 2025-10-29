@@ -1,4 +1,4 @@
-import { GPTLoaderSkeleton } from "@/app/components/GPTLoaderSkeleton";
+import GPTLoaderSkeleton from "@/app/components/GPTLoaderSkeleton";
 import Link from "next/link";
 import { Suspense } from "react";
 import {
